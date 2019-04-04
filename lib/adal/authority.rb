@@ -112,6 +112,14 @@ module ADAL
       @validated
     end
 
+    def ==(b)
+      return super unless b.kind_of?(self.class)
+
+      instance_variables.all? do |var|
+        instance_variable_get(var) == b.instance_variable_get(var)
+      end
+    end
+
     private
 
     ##

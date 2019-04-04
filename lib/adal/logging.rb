@@ -69,6 +69,17 @@ module ADAL
       @log_output = output
     end
 
+    def nonlogger_vars
+      instance_variables - %i(@logger)
+    end
+
+    ##
+    # create a default == that compares all member variables except logger
+    def ==(b)
+      return super unless b.kind_of?(self.class)
+      nonlogger_vars.all? {|var| instance_variable_get(var) == b.instance_variable_get(var)}
+    end
+
     ##
     # Creates one ADAL logger per calling class/module with a specified output.
     # This is to be used within ADAL. Clients will have no use for it.

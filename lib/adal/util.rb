@@ -28,9 +28,20 @@ module ADAL
       fail ArgumentError, 'Arguments cannot be nil.' if args.any?(&:nil?)
     end
 
+    class << self
+      attr_writer :http_provider
+      def http_provider
+        @http_provider || self
+      end
+    end
+
+    def http(uri)
+      ADAL::Util.http_provider.get_http(uri)
+    end
+    
     # @param URI|String
     # @return Net::HTTP
-    def http(uri)
+    def get_http(uri)
       uri = URI.parse(uri.to_s)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = uri.scheme == 'https'
