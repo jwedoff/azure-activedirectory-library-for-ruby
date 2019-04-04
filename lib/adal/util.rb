@@ -33,19 +33,19 @@ module ADAL
       def http_provider
         @http_provider || self
       end
+
+      # @param URI|String
+      # @return Net::HTTP
+      def http(uri)
+        uri = URI.parse(uri.to_s)
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = uri.scheme == 'https'
+        http
+      end
     end
 
     def http(uri)
-      ADAL::Util.http_provider.get_http(uri)
-    end
-    
-    # @param URI|String
-    # @return Net::HTTP
-    def get_http(uri)
-      uri = URI.parse(uri.to_s)
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = uri.scheme == 'https'
-      http
+      ADAL::Util.http_provider.http(uri)
     end
 
     ##

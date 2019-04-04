@@ -21,6 +21,7 @@
 #-------------------------------------------------------------------------------
 
 require 'openssl'
+require_relative './request_parameters'
 
 module ADAL
   # An assertion made by a client with an X509 certificate. This requires both
