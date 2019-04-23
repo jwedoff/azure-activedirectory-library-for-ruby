@@ -59,6 +59,14 @@ module ADAL
     def error?
       self.respond_to? :error
     end
+
+    def authorization_headers
+      {}
+    end
+
+    def valid_token?
+      false
+    end
   end
 
   # A token response that contains an access token. All fields are read only
@@ -88,6 +96,14 @@ module ADAL
                   "#{Digest::SHA256.hexdigest @access_token.to_s} and " \
                   'refresh token digest ' \
                   "#{Digest::SHA256.hexdigest @refresh_token.to_s}.")
+    end
+
+    def valid_token?
+      @expires_on.to_i >= Time.now.to_i
+    end
+
+    def authorization_headers
+      {Authorization: "#{token_type||'Bearer'} #{access_token}"}
     end
 
     ##
